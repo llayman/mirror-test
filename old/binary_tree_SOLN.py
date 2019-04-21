@@ -162,6 +162,40 @@ class BinarySearchTree:
             self.traverse_postorder(curr.right)
         print(curr)
 
+    def traverse_inorder(self, node=None):
+        curr = node
+        if node is None:
+            curr = self.root
+
+        if curr.left is not None:
+            self.traverse_inorder(curr.left)
+        print(curr)
+        if curr.right is not None:
+            self.traverse_inorder(curr.right)
+
+
+    def traverse_preorder(self, node=None):
+        curr = node
+        if node is None:
+            curr = self.root
+
+        print(curr)
+        if curr.left:
+            self.traverse_preorder(curr.left)
+        if curr.right:
+            self.traverse_preorder(curr.right)
+
+    def traverse_postorder(self, node=None):
+        curr = node
+        if node is None:
+            curr = self.root
+
+        if curr.left:
+            self.traverse_postorder(curr.left)
+        if curr.right:
+            self.traverse_postorder(curr.right)
+        print(curr)
+
 
 if __name__ == "__main__":
     tree = BinarySearchTree()
