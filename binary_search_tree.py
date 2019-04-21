@@ -8,7 +8,6 @@
 # traverse_postorder
 # __ iter__
 # reversed
-# clear
 # keys
 # values
 # items
@@ -79,6 +78,18 @@ class BinarySearchTree:
         else:
             raise KeyError
 
+    def __contains__(self, item):
+        found = False
+        curr = self.root
+        while curr is not None and not found:
+            if item == curr.key:
+                found = True
+            elif item > curr.key:
+                curr = curr.right
+            else:
+                curr = curr.left
+        return found
+
 
 
 
@@ -94,6 +105,8 @@ def main():
     suite.test_03_getitem_keyerrors()
     suite.test_04_setitem_and_getitem()
     suite.test_05_setitem_differenttype()
+    suite.test_06_len()
+    suite.test_07_contains()
     # suite.test_01_powers_of_two()
     # suite.test_02_is_palindrome()
     # suite.test_03_folding_method()
