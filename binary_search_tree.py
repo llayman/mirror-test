@@ -2,7 +2,7 @@
 
 
 
-class BinaryNode:
+class TreeNode:
     def __init__(self, key=None, value=None):
         self.key = key
         self.value = value
@@ -12,6 +12,16 @@ class BinaryNode:
     def __str__(self):
         return "({}, {})".format(self.key, self.value)
 
+    # def __iter__(self):
+    #     if self:
+    #         if self.left:
+    #             for elem in self.left:
+    #                 yield elem
+    #         yield self
+    #         if self.right:
+    #             for elem in self.right:
+    #                 yield elem
+
 
 class BinarySearchTree:
 
@@ -19,60 +29,57 @@ class BinarySearchTree:
         self.root = None
         self.size = 0
 
+    # def __iter__(self):
+    #     for elem in self.root:
+    #         yield elem
+
     def __len__(self):
         return self.size
 
+    def insert(self, curr, key, value):
+        if curr.key == key:
+            curr.value = value
+        elif curr.key > key:
+            if curr.left:
+                self.insert(curr.left, key, value)
+            else:
+                curr.left = TreeNode(key, value)
+                self.size += 1
+        else:
+            if curr.right:
+                self.insert(curr.right, key, value)
+            else:
+                curr.right = TreeNode(key, value)
+                self.size += 1
+
     def __setitem__(self, key, value):
         if not self.root:
-            self.root = BinaryNode(key, value)
+            self.root = TreeNode(key, value)
             self.size += 1
         else:
-            curr = self.root
-            # if curr == key, replace
-            # if curr = None, create node
-            done = False
-            while not done:
-                if curr.key == key:
-                    curr.value = value
-                    done = True
-                elif curr.key > key:
-                    if curr.left:
-                        curr = curr.left
-                    else:
-                        curr.left = BinaryNode(key, value)
-                        self.size += 1
-                        done = True
-                else:
-                    if curr.right:
-                        curr = curr.right
-                    else:
-                        curr.right = BinaryNode(key, value)
-                        self.size += 1
-                        done = True
+            self.insert(self.root, key, value)
+
+
+    # def find(self, curr, key):
+    #     if not curr:
+    #         raise KeyError
+    #     elif curr.key == key:
+    #         return curr
+    #     elif key < curr.key:
+    #         return self.find(curr.left, key)
+    #     else:
+    #         return self.find(curr.right, key)
 
     def __getitem__(self, key):
-        curr = self.root
-        while curr is not None and curr.key != key:
-            if curr.key > key:
-                curr = curr.left
-            else:
-                curr = curr.right
-
-        if curr:
+        # return self.find(self.root, key).value
+        found, curr, parent = self._locate_node(key)
+        if found:
             return curr.value
         else:
             raise KeyError
 
     def __contains__(self, item):
-        found = False
-        curr = self.root
-        while curr is not None and not found:
-            if item == curr.key:
-                found = True
-            elif item > curr.key:
-                curr = curr.right
-            else:
-                curr = curr.left
+        found, curr, parent = self._locate_node(item)
         return found
 
     def _locate_node(self, key):
@@ -131,7 +138,6 @@ class BinarySearchTree:
             else:
                 parent.right = subtree
 
-
     def traverse_inorder(self, node=None):
         if self.root is None:
             return
@@ -145,7 +151,6 @@ class BinarySearchTree:
         print(curr)
         if curr.right is not None:
             self.traverse_inorder(curr.right)
-
 
     def traverse_preorder(self, node=None):
         if self.root is None:
@@ -176,6 +181,51 @@ class BinarySearchTree:
             self.traverse_postorder(curr.right)
         print(curr)
 
+    def keys(self, node=None, a_list=None):
+        if self.root is None:
+            return []
+
+        curr = node
+        if node is None:
+            curr = self.root
+            a_list = []
+
+        if curr.left is not None:
+            self.keys(curr.left, a_list)
+        a_list.append(curr.key)
+        if curr.right is not None:
+            self.keys(curr.right, a_list)
+
+        return a_list
+
+    def values(self, node=None, a_list=None):
+        if self.root is None:
+            return []
+
+        curr = node
+        if node is None:
+            curr = self.root
+            a_list = []
+
+        if curr.left is not None:
+            self.values(curr.left, a_list)
+        a_list.append(curr.value)
+        if curr.right is not None:
+            self.values(curr.right, a_list)
+
+        return a_list
+
+    def height(self, node=None, depth=0):
+        if self.root is None:
+            raise ValueError
+        if not node.left and not node.right:
+
+        curr = node if node else self.root
+        lheight = self.height(curr.left, depth+1)
+        rheight = self.height(curr.right, depth+1)
+
+        if lheight :
+
 
 def main():
     # You may comment out the calls to the test_xxx() functions to reduce
@@ -194,12 +244,8 @@ def main():
     suite.test_08_inorder_traversal()
     suite.test_09_preorder_traversal()
     suite.test_10_postorder_traversal()
-
-
-# __ iter__
-# keys
-# values
-# items
+    suite.test_11_keys()
+    suite.test_12_values()
 
 
 if __name__ == '__main__':

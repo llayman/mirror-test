@@ -499,3 +499,58 @@ class TestSuite:
               actual=actual,
               call="traverse_postorder() on an empty tree should not print anything")
 
+    def test_11_keys(self):
+
+        try:
+            tree = self.module.BinarySearchTree()
+            tree['Charlie'] = 55555
+            tree['Bob'] = 44444
+            tree['Alice'] = 33333
+            tree['Banks'] = 123145
+            tree['Dave'] = 891273
+            tree['Chris'] = 9012
+            tree['Ernie'] = 0000000
+            tree['Doug'] = 123
+            tree['Frank'] = 0000000
+            expected = ['Alice', 'Banks', 'Bob', 'Charlie', 'Chris', 'Dave', 'Doug', 'Ernie', 'Frank']
+
+            _test(expected=expected,
+                  actual=tree.keys(),
+                  call="keys()")
+
+        except NotImplementedError:
+            print("\u2717 keys() not implemented. aborting further tests")
+            return
+
+        tree = self.module.BinarySearchTree()
+        _test(expected=[],
+              actual=tree.keys(),
+              call="keys() on an empty tree should return an empty list")
+
+    def test_12_values(self):
+
+        try:
+            tree = self.module.BinarySearchTree()
+            tree['Charlie'] = 55555
+            tree['Bob'] = 44444
+            tree['Alice'] = 33333
+            tree['Banks'] = 123145
+            tree['Dave'] = 891273
+            tree['Chris'] = 9012
+            tree['Ernie'] = 0000000
+            tree['Doug'] = 123
+            tree['Frank'] = 0000000
+            expected = [33333, 123145, 44444, 55555, 9012, 891273, 123, 0, 0]
+
+            _test(expected=expected,
+                  actual=tree.values(),
+                  call="values()")
+
+        except NotImplementedError:
+            print("\u2717 values() not implemented. aborting further tests")
+            return
+
+        tree = self.module.BinarySearchTree()
+        _test(expected=[],
+              actual=tree.keys(),
+              call="values() on an empty tree should return an empty list")
