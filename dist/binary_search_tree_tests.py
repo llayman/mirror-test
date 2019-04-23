@@ -656,20 +656,3 @@ class TestSuite:
             print("\u2717 FAILED: find_max() on an empty tree should raise a ValueError")
         except ValueError:
             print("\u2713 passed: called find_max() on an empty tree correctly raised a ValueError")
-
-    def run_all(self):
-        self.test_01_constructor()
-        self.test_02_setitem_doesnt_explode()
-        self.test_03_getitem_keyerrors()
-        self.test_04_setitem_and_getitem()
-        self.test_05_len()
-        self.test_06_contains()
-        self.test_07_delitem()
-        self.test_08_inorder_traversal()
-        self.test_09_preorder_traversal()
-        self.test_10_postorder_traversal()
-        self.test_11_keys()
-        self.test_12_values()
-        self.test_13_height()
-        self.test_14_find_min()
-        self.test_15_find_max()
