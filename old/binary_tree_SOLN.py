@@ -56,7 +56,6 @@ class BinarySearchTree:
     def max_height(self):
         return self._height
 
-
     def _locate_node(self, item):
         found = False
         curr = self.root
@@ -84,7 +83,7 @@ class BinarySearchTree:
     def delete(self, item):
         # 1. First, we need to find the leaf we want to delete. We must also keep track of the parent.
         found, node, parent = self._locate_node(item)
-        if found:           # Do nothing if item is not in the tree
+        if found:  # Do nothing if item is not in the tree
             self.size -= 1
             # a) handle the case where node has 2 children
             # 1. Find node's inorder successor (leftmost right descendant) and the successor's parent
@@ -95,7 +94,6 @@ class BinarySearchTree:
                 node.data = successor.data
                 node = successor
                 parent = succ_parent
-
 
             # b) handle deleting leaf or node with 1 child
             # 1. Select the target node’s non-empty subtree (if one exits)
@@ -111,7 +109,6 @@ class BinarySearchTree:
                 parent.left = subtree
             else:
                 parent.right = subtree
-
 
     def __len__(self):
         return self.size
@@ -138,41 +135,6 @@ class BinarySearchTree:
         print(curr)
         if curr.right is not None:
             self.traverse_inorder(curr.right)
-
-
-    def traverse_preorder(self, node=None):
-        curr = node
-        if node is None:
-            curr = self.root
-
-        print(curr)
-        if curr.left:
-            self.traverse_preorder(curr.left)
-        if curr.right:
-            self.traverse_preorder(curr.right)
-
-    def traverse_postorder(self, node=None):
-        curr = node
-        if node is None:
-            curr = self.root
-
-        if curr.left:
-            self.traverse_postorder(curr.left)
-        if curr.right:
-            self.traverse_postorder(curr.right)
-        print(curr)
-
-    def traverse_inorder(self, node=None):
-        curr = node
-        if node is None:
-            curr = self.root
-
-        if curr.left is not None:
-            self.traverse_inorder(curr.left)
-        print(curr)
-        if curr.right is not None:
-            self.traverse_inorder(curr.right)
-
 
     def traverse_preorder(self, node=None):
         curr = node
@@ -211,6 +173,6 @@ if __name__ == "__main__":
     tree.insert('Z')
     tree.insert('Q')
     tree.insert('P')
-    tree.inorder_traversal()
+    tree.traverse_inorder()
     # tree.delete('E')
     tree.traverse_preorder()

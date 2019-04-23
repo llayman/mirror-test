@@ -1,6 +1,6 @@
-import traceback
-import re
 import io
+import re
+import traceback
 from contextlib import redirect_stdout
 
 
@@ -17,16 +17,14 @@ class TestSuite:
     def __init__(self, module_name):
         self.module = module_name
 
-    def test_01_constructor(self, title="constructor"):
-        tree = self.module.BinarySearchTree()
-
+    def test_01_constructor(self):
         try:
             tree = self.module.BinarySearchTree()
             _test(expected=None,
                   actual=tree.root,
                   call="getting the root of an empty tree")
         except Exception as e:
-            print("\u2717 failed. The {} raised an exception. {}: {}".format(title, type(e).__name__, e))
+            print("\u2717 failed. The constructor raised an exception. {}: {}".format(type(e).__name__, e))
             print(traceback.format_exc())
 
     def test_02_setitem_doesnt_explode(self):
@@ -34,7 +32,8 @@ class TestSuite:
         try:
             tree[5] = 'Bob'
         except NotImplementedError:
-            print("\u2717 call to tree[5]='Bob' failed because  __setitem__ is not implemented. Aborting tests of __setitem__")
+            print(
+                "\u2717 call to tree[5]='Bob' failed because  __setitem__ is not implemented. Aborting tests of __setitem__")
             return
 
         except Exception as e:
@@ -60,24 +59,24 @@ class TestSuite:
         except NotImplementedError:
             print("\u2717 call to tree[5] failed. __getitem__ is not implemented. Aborting tests of __getitem__")
             return
-
-
-        except KeyError as ke:
+        except KeyError:
             print("\u2713 passed: __getitem__ on an empty tree correctly raised a KeyError")
 
         try:
             tree[5] = 'Bob'
             tree[6]
-        except KeyError as ke:
-            print("\u2713 passed: __getitem__ using a key not in the tree (tree length = 1) correctly raised a KeyError")
+        except KeyError:
+            print(
+                "\u2713 passed: __getitem__ using a key not in the tree (tree length = 1) correctly raised a KeyError")
 
         try:
             tree[5] = 'Bob'
             tree[6] = 'Alice'
             tree[7] = 'Charles'
             tree[0]
-        except KeyError as ke:
-            print("\u2713 passed: __getitem__ using a key not in the tree (tree length = 3) correctly raised a KeyError")
+        except KeyError:
+            print(
+                "\u2713 passed: __getitem__ using a key not in the tree (tree length = 3) correctly raised a KeyError")
 
     def test_04_setitem_and_getitem(self):
         tree = self.module.BinarySearchTree()
@@ -139,9 +138,8 @@ class TestSuite:
         tree['Wilson'] = 6
 
         _test(expected=True,
-              actual=(tree['Alice'] ==5 and tree['Wilson'] == 6),
+              actual=(tree['Alice'] == 5 and tree['Wilson'] == 6),
               call="checking that the tree supports keys that aren't integers")
-
 
     def test_05_len(self):
         tree = self.module.BinarySearchTree()
@@ -213,8 +211,6 @@ class TestSuite:
             print("\u2717 call to \"'Joe' in tree\" failed. __contains__ is not implements. Aborting tests of 'in'")
             return
 
-
-
         tree['Joe'] = 'Jones'
         _test(expected=True,
               actual=('Joe' in tree),
@@ -251,7 +247,7 @@ class TestSuite:
         except NotImplementedError:
             print("\u2717 call to 'del tree[5]' failed. __delitem__ is not implemented. Aborting tests of del")
             return
-        except KeyError as ke:
+        except KeyError:
             print("\u2713 called del tree[5] on an empty tree correctly raised a KeyError")
 
         tree[10] = 'Alice'
@@ -270,7 +266,7 @@ class TestSuite:
 
         try:
             del tree[10]
-        except KeyError as ke:
+        except KeyError:
             print("\u2713 called del tree[10] on a now-empty tree correctly raised a KeyError")
 
         tree[10] = 'Alice'
@@ -292,7 +288,7 @@ class TestSuite:
 
         try:
             del tree[10]
-        except KeyError as ke:
+        except KeyError:
             print("\u2713 called del[10] (which was previously deleted) correctly raised a KeyError")
 
         _test(expected=2,
@@ -311,7 +307,6 @@ class TestSuite:
         _test(expected=False,
               actual=5 in tree,
               call="'5 in tree' should return False after the key was deleted")
-
 
         del tree[15]
         _test(expected=0,
@@ -334,21 +329,20 @@ class TestSuite:
         tree[12] = 'Ernie'
 
         del tree[1]
-        _test(expected = 4,
+        _test(expected=4,
               actual=len(tree),
               call='deleted a leaf node (tree[1]). length should be 4')
 
-        _test(expected = None,
-              actual = tree.root.left.left,
+        _test(expected=None,
+              actual=tree.root.left.left,
               call='left grandchild of root should be None after deleting that leaf node')
 
         _test(expected=False,
               actual=1 in tree,
               call="'1 in tree' should return False after the key was deleted")
 
-
         del tree[15]
-        _test(expected = 3,
+        _test(expected=3,
               actual=len(tree),
               call='deleted a node with one child (tree[15]). length should now be 3')
 
@@ -373,7 +367,7 @@ class TestSuite:
               actual=tree.root.left.key,
               call="called del tree['Bob'] who is the left child of the root. Should be replaced by its inorder successor node, whoese key is Cara")
 
-        _test(expected = 5,
+        _test(expected=5,
               actual=len(tree),
               call='length should now be 5')
 
@@ -384,15 +378,15 @@ class TestSuite:
         del tree['Cara']
         _test(expected='Charlie',
               actual=tree.root.left.key,
-              call="called del tree['Cara'] who is now the left child of the root. Should be replaced by its inorder successor node, whoese key is Charlie")
+              call="called del tree['Cara'] who is now the left child of the root. Should be replaced by its inorder successor node, whose key is Charlie")
 
-        _test(expected = 4,
+        _test(expected=4,
               actual=len(tree),
               call='length should now be 4')
 
         _test(expected=False,
-                  actual='Cara' in tree,
-                  call="('Cara' in tree) should return False after the key was deleted")
+              actual='Cara' in tree,
+              call="('Cara' in tree) should return False after the key was deleted")
 
     def test_08_inorder_traversal(self):
 
@@ -410,19 +404,19 @@ class TestSuite:
             expected = "(Alice,33333)(Banks,123145)(Bob,44444)(Charlie,55555)(Chris,9012)(Dave,891273)(Doug,123)(Ernie,0)(Frank,0)"
 
             f = io.StringIO()
-            with  redirect_stdout(f):
+            with redirect_stdout(f):
                 tree.traverse_inorder()
             actual = re.sub(r'\s+', '', f.getvalue())
             _test(expected=expected,
                   actual=actual,
                   call="traverse_inorder()")
         except NotImplementedError:
-            print("\u2717 tracerse_inorder() not implemented. aborting further tests")
+            print("\u2717 traverse_inorder() not implemented. aborting further tests")
             return
 
         tree = self.module.BinarySearchTree()
         f = io.StringIO()
-        with  redirect_stdout(f):
+        with redirect_stdout(f):
             tree.traverse_inorder()
         actual = re.sub(r'\s+', '', f.getvalue())
         _test(expected='',
@@ -445,7 +439,7 @@ class TestSuite:
             expected = "(Charlie,55555)(Bob,44444)(Alice,33333)(Banks,123145)(Dave,891273)(Chris,9012)(Ernie,0)(Doug,123)(Frank,0)"
 
             f = io.StringIO()
-            with  redirect_stdout(f):
+            with redirect_stdout(f):
                 tree.traverse_preorder()
             actual = re.sub(r'\s+', '', f.getvalue())
             _test(expected=expected,
@@ -457,7 +451,7 @@ class TestSuite:
 
         tree = self.module.BinarySearchTree()
         f = io.StringIO()
-        with  redirect_stdout(f):
+        with redirect_stdout(f):
             tree.traverse_preorder()
         actual = re.sub(r'\s+', '', f.getvalue())
         _test(expected='',
@@ -480,7 +474,7 @@ class TestSuite:
             expected = "(Banks,123145)(Alice,33333)(Bob,44444)(Chris,9012)(Doug,123)(Frank,0)(Ernie,0)(Dave,891273)(Charlie,55555)"
 
             f = io.StringIO()
-            with  redirect_stdout(f):
+            with redirect_stdout(f):
                 tree.traverse_postorder()
             actual = re.sub(r'\s+', '', f.getvalue())
             _test(expected=expected,
@@ -492,7 +486,7 @@ class TestSuite:
 
         tree = self.module.BinarySearchTree()
         f = io.StringIO()
-        with  redirect_stdout(f):
+        with redirect_stdout(f):
             tree.traverse_postorder()
         actual = re.sub(r'\s+', '', f.getvalue())
         _test(expected='',
@@ -554,3 +548,50 @@ class TestSuite:
         _test(expected=[],
               actual=tree.keys(),
               call="values() on an empty tree should return an empty list")
+
+    def test_13_height(self):
+        try:
+            tree = self.module.BinarySearchTree()
+            tree['Charlie'] = 55555
+            tree['Bob'] = 44444
+            tree['Alice'] = 33333
+            tree['Banks'] = 123145
+            tree['Dave'] = 891273
+            tree['Chris'] = 9012
+            tree['Ernie'] = 0000000
+            tree['Doug'] = 123
+            tree['Frank'] = 0000000
+
+            _test(expected=3,
+                  actual=tree.height(),
+                  call="tree.height()")
+        except NotImplementedError:
+            print("\u2717 height() not implemented. aborting further tests")
+            return
+
+        tree = self.module.BinarySearchTree()
+        tree[1] = 55555
+        tree[0] = 'aaaa'
+        tree[2] = 44444
+        tree[3] = 33333
+        tree[4] = 123145
+        tree[5] = 891273
+        tree[6] = 9012
+        tree[7] = 0000000
+        tree[8] = 123
+        tree[9] = 0000000
+
+        _test(expected=8,
+              actual=tree.height(),
+              call="tree.height()")
+
+        tree = self.module.BinarySearchTree()
+        tree[1] = 55555
+        _test(expected=0,
+              actual=tree.height(),
+              call="tree.height()")
+        try:
+            tree = self.module.BinarySearchTree()
+            tree.height()
+        except ValueError:
+            print("\u2713 passed: called height() on an empty tree correctly raised a ValueError")

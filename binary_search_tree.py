@@ -1,7 +1,6 @@
 # keys are all the same type
 
 
-
 class TreeNode:
     def __init__(self, key=None, value=None):
         self.key = key
@@ -59,7 +58,6 @@ class BinarySearchTree:
         else:
             self.insert(self.root, key, value)
 
-
     # def find(self, curr, key):
     #     if not curr:
     #         raise KeyError
@@ -109,7 +107,7 @@ class BinarySearchTree:
     def __delitem__(self, key):
         # 1. First, we need to find the leaf we want to delete. We must also keep track of the parent.
         found, node, parent = self._locate_node(key)
-        if found:           # Do nothing if item is not in the tree
+        if found:  # Do nothing if item is not in the tree
             self.size -= 1
             # a) handle the case where node has 2 children
             # 1. Find node's inorder successor (leftmost right descendant) and the successor's parent
@@ -119,9 +117,7 @@ class BinarySearchTree:
                 successor, succ_parent = self._find_inorder_successor(node)
                 node.key, node.value = successor.key, successor.value
                 node = successor
-                node = successor
                 parent = succ_parent
-
 
             # b) handle deleting leaf or node with 1 child
             # 1. Select the target node’s non-empty subtree (if one exits)
@@ -165,7 +161,6 @@ class BinarySearchTree:
             self.traverse_preorder(curr.left)
         if curr.right:
             self.traverse_preorder(curr.right)
-
 
     def traverse_postorder(self, node=None):
         if self.root is None:
@@ -215,16 +210,24 @@ class BinarySearchTree:
 
         return a_list
 
-    def height(self, node=None, depth=0):
+    def depth(self, node, depth=0):
+        if not node:
+            return 0
+        elif not node.left and not node.right:
+            return depth
+        else:
+            lheight = self.depth(node.left, depth + 1)
+            rheight = self.depth(node.right, depth + 1)
+            if lheight > rheight:
+                return lheight
+            else:
+                return rheight
+
+    def height(self):
         if self.root is None:
             raise ValueError
-        if not node.left and not node.right:
 
-        curr = node if node else self.root
-        lheight = self.height(curr.left, depth+1)
-        rheight = self.height(curr.right, depth+1)
-
-        if lheight :
+        return self.depth(self.root)
 
 
 def main():
@@ -246,6 +249,7 @@ def main():
     suite.test_10_postorder_traversal()
     suite.test_11_keys()
     suite.test_12_values()
+    suite.test_13_height()
 
 
 if __name__ == '__main__':
