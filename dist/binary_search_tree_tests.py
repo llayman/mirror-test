@@ -1,5 +1,6 @@
 import io
 import re
+import sys
 import traceback
 from contextlib import redirect_stdout
 
@@ -18,6 +19,7 @@ class TestSuite:
         self.module = module_name
 
     def test_01_constructor(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         tree = self.module.TreeMap()
         try:
             _test(expected=None,
@@ -28,6 +30,7 @@ class TestSuite:
             print(traceback.format_exc())
 
     def test_02_setitem_doesnt_explode(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         tree = self.module.TreeMap()
         try:
             tree[5] = 'Bob'
@@ -35,7 +38,6 @@ class TestSuite:
             print(
                 "\u2717 FAILED: call to tree[5]='Bob' failed because  __setitem__ is not implemented. Aborting tests of __setitem__")
             return
-
         except Exception as e:
             print("\u2717 FAILED. calling tree[5] = 'Bob' raised an exception. {}: {}".format(type(e).__name__, e))
             print(traceback.format_exc())
@@ -52,7 +54,11 @@ class TestSuite:
             print("\u2717 FAILED. calling tree[7] = 'Charles' raised an exception. {}: {}".format(type(e).__name__, e))
             print(traceback.format_exc())
 
+        print(
+            "\u2713 passed: __setitem__ seems to work. Continuing with tests.")
+
     def test_03_getitem_keyerrors(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         tree = self.module.TreeMap()
         try:
             tree[5]
@@ -82,6 +88,7 @@ class TestSuite:
                 "\u2713 passed: __getitem__ using a key not in the tree (tree length = 3) correctly raised a KeyError")
 
     def test_04_setitem_and_getitem(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         tree = self.module.TreeMap()
 
         try:
@@ -145,6 +152,7 @@ class TestSuite:
               call="checking that the tree supports keys that aren't integers")
 
     def test_05_len(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         tree = self.module.TreeMap()
 
         try:
@@ -205,13 +213,15 @@ class TestSuite:
               call="reset the tree and added 11 items. len(tree) should be 10")
 
     def test_06_contains(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         tree = self.module.TreeMap()
         try:
             _test(expected=False,
                   actual='Joe' in tree,
                   call="calling 'in' on an empty tree should return False")
         except NotImplementedError:
-            print("\u2717 FAILED: call to \"'Joe' in tree\" failed. __contains__ is not implements. Aborting tests of 'in'")
+            print(
+                "\u2717 FAILED: call to \"'Joe' in tree\" failed. __contains__ is not implements. Aborting tests of 'in'")
             return
 
         tree['Joe'] = 'Jones'
@@ -244,6 +254,7 @@ class TestSuite:
               call='0 is a key in the tree')
 
     def test_07_delitem(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         tree = self.module.TreeMap()
         try:
             del tree[5]
@@ -395,7 +406,7 @@ class TestSuite:
               call="('Cara' in tree) should return False after the key was deleted")
 
     def test_08_inorder_traversal(self):
-
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -430,7 +441,7 @@ class TestSuite:
               call="traverse_inorder() on an empty tree should not print anything")
 
     def test_09_preorder_traversal(self):
-
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -465,7 +476,7 @@ class TestSuite:
               call="traverse_preorder() on an empty tree should not print anything")
 
     def test_10_postorder_traversal(self):
-
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -500,7 +511,7 @@ class TestSuite:
               call="traverse_postorder() on an empty tree should not print anything")
 
     def test_11_keys(self):
-
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -528,7 +539,7 @@ class TestSuite:
               call="keys() on an empty tree should return an empty list")
 
     def test_12_values(self):
-
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -556,6 +567,7 @@ class TestSuite:
               call="values() on an empty tree should return an empty list")
 
     def test_13_height(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -604,6 +616,7 @@ class TestSuite:
             print("\u2713 passed: called height() on an empty tree correctly raised a ValueError")
 
     def test_14_find_min(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -631,6 +644,7 @@ class TestSuite:
             print("\u2713 passed: called find_min() on an empty tree correctly raised a ValueError")
 
     def test_15_find_max(self):
+        print('-' * 5, sys._getframe().f_code.co_name, '-' * 5)
         try:
             tree = self.module.TreeMap()
             tree['Charlie'] = 55555
@@ -656,3 +670,20 @@ class TestSuite:
             print("\u2717 FAILED: find_max() on an empty tree should raise a ValueError")
         except ValueError:
             print("\u2713 passed: called find_max() on an empty tree correctly raised a ValueError")
+
+    def run_all(self):
+        self.test_01_constructor()
+        self.test_02_setitem_doesnt_explode()
+        self.test_03_getitem_keyerrors()
+        self.test_04_setitem_and_getitem()
+        self.test_05_len()
+        self.test_06_contains()
+        self.test_07_delitem()
+        self.test_08_inorder_traversal()
+        self.test_09_preorder_traversal()
+        self.test_10_postorder_traversal()
+        self.test_11_keys()
+        self.test_12_values()
+        self.test_13_height()
+        self.test_14_find_min()
+        self.test_15_find_max()
