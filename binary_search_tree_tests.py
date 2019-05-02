@@ -315,7 +315,7 @@ class TestSuite:
         del tree[5]
         _test(expected='Charlie',
               actual=tree.root.value,
-              call="tree.root.value should be Bob after deleting the root with one child")
+              call="tree.root.value should be Charlie after deleting the root with one child")
 
         _test(expected=1,
               actual=len(tree),
@@ -525,9 +525,9 @@ class TestSuite:
             tree['Frank'] = 0000000
             expected = ['Alice', 'Banks', 'Bob', 'Charlie', 'Chris', 'Dave', 'Doug', 'Ernie', 'Frank']
 
-            _test(expected=expected,
-                  actual=tree.keys(),
-                  call="keys()")
+            _test(expected=sorted(expected),
+                  actual=sorted(tree.keys()),
+                  call="sorting the results of keys()")
 
         except NotImplementedError:
             print("\u2717 FAILED: keys() not implemented. aborting further tests")
@@ -553,9 +553,9 @@ class TestSuite:
             tree['Frank'] = 0000000
             expected = [33333, 123145, 44444, 55555, 9012, 891273, 123, 0, 0]
 
-            _test(expected=expected,
-                  actual=tree.values(),
-                  call="values()")
+            _test(expected=sorted(expected),
+                  actual=sorted(tree.values()),
+                  call="sorting the results of values()")
 
         except NotImplementedError:
             print("\u2717 FAILED: values() not implemented. aborting further tests")

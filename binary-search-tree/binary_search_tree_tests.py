@@ -315,7 +315,7 @@ class TestSuite:
         del tree[5]
         _test(expected='Charlie',
               actual=tree.root.value,
-              call="tree.root.value should be Bob after deleting the root with one child")
+              call="tree.root.value should be Charlie after deleting the root with one child")
 
         _test(expected=1,
               actual=len(tree),
